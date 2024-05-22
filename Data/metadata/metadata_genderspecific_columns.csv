@@ -1,5 +1,4 @@
 variable_name,variable_type,role,gender_specific
-kessler_dummy1,categorical,feature,
 sec_amenorrhea1,categorical,feature,female
 ever_preg1,categorical,feature,female
 miscarried1,categorical,feature,female
