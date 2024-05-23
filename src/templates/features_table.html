@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Feature Importances</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F4F1F8; /* Northwestern light background color */
+            color: #333333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+        .banner {
+            width: 100%;
+            background-color: #512D6D; /* Northwestern purple */
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Optional: adds shadow for better depth */
+            position: relative;
+        }
+        nav {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        h1 {
+            margin: 0;
+            color: white;
+        }
+        .content-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            width: 100%;
+            padding: 20px;
+        }
+        h2 {
+            margin: 20px 0;
+            color: #512D6D; /* Northwestern purple */
+        }
+        table {
+            width: 100%;
+            max-width: 800px;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 2px solid #512D6D;
+            text-align: left;
+        }
+        th {
+            background-color: #512D6D;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #F4F1F8;
+        }
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <h1>Ghana Panel Survey</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/faq">FAQ</a>
+        </nav>
+    </div>
+    <div class="content-container">
+        <h2>Model Type: {{ model_type }}</h2>
+        {% for accuracy in accuracies %}
+        <p>Model test accuracy for variable {{ accuracy.Target }}: {{ '%.2f'|format(accuracy.Accuracy) }}</p>
+        {% endfor %}
+        <table>
+            <tr>
+                <th>Target</th>
+                <th>Feature Rank</th>
+                <th>Feature</th>
+            </tr>
+            {% for feature in features %}
+            <tr>
+                <td>{{ feature.Target }}</td>
+                <td>{{ feature.Feature_Rank }}</td>
+                <td>{{ feature.Feature }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>

@@ -7,6 +7,7 @@ from sklearn.ensemble import HistGradientBoostingClassifier
 from sklearn.utils.class_weight import compute_class_weight
 import numpy as np
 from sklearn.model_selection import cross_val_score
+from sklearn.metrics import classification_report, accuracy_score, confusion_matrix
 
 
 def split_data(df, target_columns, test_size=0.2, random_state=42):
@@ -32,45 +33,6 @@ def split_data(df, target_columns, test_size=0.2, random_state=42):
 
     return splits
 
-def train_and_evaluate_model(model, X_train, y_train, X_test, y_test):
-    try:
-        model.fit(X_train, y_train)
-        y_pred = model.predict(X_test)
-        accuracy = accuracy_score(y_test, y_pred)
-        conf_matrix = confusion_matrix(y_test, y_pred)
-        class_report = classification_report(y_test, y_pred, output_dict=True)
-
-        performance = {
-            'model': model,
-            'accuracy': accuracy,
-            'conf_matrix': conf_matrix,
-            'class_report': class_report
-        }
-        print(f"Model: {model.__class__.__name__}")
-        print(f'Accuracy: {accuracy}')
-        print(f'Confusion Matrix:\n{conf_matrix}')
-        print(f'Classification Report:\n{classification_report(y_test, y_pred)}')
-        return performance
-    except Exception as e:
-        print(f"Failed to train and evaluate model: {e}")
-        return None
-
-
-def compare_models(X_train, y_train, X_test, y_test):
-    models = [
-        LogisticRegression(),
-        RandomForestClassifier(),
-        SVC(),
-        HistGradientBoostingClassifier()
-    ]
-
-    performance_list = []
-    for model in models:
-        performance = train_and_evaluate_model(model, X_train, y_train, X_test, y_test)
-        if performance:
-            performance_list.append(performance)
-
-    return performance_list
 
 def compute_class_weights(y):
     class_weights = compute_class_weight('balanced', classes=np.unique(y), y=y)
@@ -96,10 +58,52 @@ def cross_validate_model(model, X_train, y_train, cv=5, scoring='accuracy'):
     mean_score = np.mean(scores)
     std_score = np.std(scores)
     return mean_score, std_score
-# Compute class weights
-# class_weights = compute_class_weights(y_train)
-# scale_pos_weight = class_weights[1] / class_weights[0]  # For binary classification
-#
-# clf = train_xgboost(X_train, y_train, n_estimators=100, learning_rate=0.1, max_depth=6,
-#                     scale_pos_weight=scale_pos_weight)
-# result = evaluate_xgboost(clf, X_test, y_test)
+
+def train_model(model, X_train, y_train):
+    """
+    Train a generic model.
+
+    Parameters:
+    - model (estimator): Any scikit-learn-style estimator.
+    - X_train (DataFrame): The training input samples.
+    - y_train (Series): The target values.
+
+    Returns:
+    - model: The trained model.
+    """
+    model.fit(X_train, y_train)
+    return model
+
+def evaluate_model(model, X_test, y_test):
+    """
+    Evaluate a generic trained model.
+
+    Parameters:
+    - model (estimator): Any scikit-learn-style estimator.
+    - X_test (DataFrame): The test input samples.
+    - y_test (Series): The true target values for the test set.
+
+    Returns:
+    - dict: A dictionary containing the model's name, accuracy, confusion matrix, classification report, and top features if available.
+    """
+    y_pred = model.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred)
+    conf_matrix = confusion_matrix(y_test, y_pred)
+    class_report = classification_report(y_test, y_pred, output_dict=True)
+
+    results = {
+        'model': model.__class__.__name__,
+        'accuracy': accuracy,
+        'conf_matrix': conf_matrix,
+        'class_report': class_report,
+    }
+
+    # Handling feature importances if the model has them
+    if hasattr(model, 'feature_importances_'):
+        feature_importances = model.feature_importances_
+        feature_names = X_test.columns
+        top_features = sorted(zip(feature_importances, feature_names), reverse=True)[:20]
+        results['top_features'] = top_features
+
+    return results
+

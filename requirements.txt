@@ -5,3 +5,11 @@ matplotlib
 xgboost
 imbalanced-learn
 seaborn
+shap
+fastapi==0.79.0
+uvicorn==0.18.2
+python-multipart==0.0.5
+Jinja2==3.1.1
+
+
+

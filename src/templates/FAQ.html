@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FAQ - Ghana Panel Survey</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F4F1F8;
+            color: #333333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .banner {
+            width: 100%;
+            background-color: #512D6D;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        nav {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .content {
+            max-width: 800px;
+            margin: 20px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #512D6D;
+        }
+        dl {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        dt {
+            font-weight: bold;
+            margin-top: 20px;
+            color: #512D6D;
+        }
+        dd {
+            margin-left: 20px;
+            margin-bottom: 20px;
+            padding-left: 10px;
+            border-left: 2px solid #512D6D;
+        }
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <h1>FAQ - Ghana Panel Survey</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/faq">FAQ</a>
+        </nav>
+    </div>
+    <div class="content">
+        <h2>Frequently Asked Questions</h2>
+        <dl>
+            <dt>What is the Ghana Panel Survey?</dt>
+            <dd>The Ghana Panel Survey is a longitudinal study that collects data on various socioeconomic indicators from individuals and households in Ghana over multiple waves.</dd>
+
+            <dt>How do I upload data?</dt>
+            <dd>Click on the "Choose File" button on the main page, select your CSV file from your computer, and then click "Open".</dd>
+
+            <dt>What file formats are supported?</dt>
+            <dd>Currently, only CSV (Comma-Separated Values) files are supported for data upload.</dd>
+
+            <dt>What are the different model types available?</dt>
+            <dd>The tool supports several machine learning models: Decision Tree, Random Forest, Gradient Boosting, and Logistic Regression. You can choose one based on your analysis needs.</dd>
+
+            <dt>What is a target variable?</dt>
+            <dd>A target variable is the variable that you want to predict using the machine learning model. In this tool, you can select one or more target variables from the dataset.</dd>
+
+            <dt>How do I select multiple target variables?</dt>
+            <dd>To select multiple target variables, hold down the "Ctrl" key (or "Cmd" key on Mac) and click on the desired variables.</dd>
+
+            <dt>What happens after I click "Process"?</dt>
+            <dd>After clicking "Process", the tool will process the uploaded data, train the selected model(s), and display the feature importances for the chosen target variables.</dd>
+        </dl>
+    </div>
+</body>
+</html>
