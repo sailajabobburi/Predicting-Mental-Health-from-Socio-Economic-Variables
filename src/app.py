@@ -4,7 +4,7 @@ from fastapi.templating import Jinja2Templates
 from starlette.requests import Request
 import uvicorn
 import shutil
-import main as main_module  # renamed to avoid conflict with main function
+import src.main as main_module  # renamed to avoid conflict with main function
 from typing import List
 
 app = FastAPI()
