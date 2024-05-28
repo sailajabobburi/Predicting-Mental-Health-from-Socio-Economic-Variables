@@ -2,12 +2,9 @@
 from src.model_training import *
 from src.report_generation import *
 from src.data_preprocessing import *
-from src.data_loading import split_train_test
+from src.data_loading import *
 import src.config as config
 from src.feature_selection import *
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
-from sklearn.linear_model import LogisticRegression
 from src.feature_importance import *
 
 
@@ -35,12 +32,6 @@ def main(data_file_path, model_type, target_variables, feature_selection_criteri
         ),
         'random_forest': RandomForestClassifier(
             n_estimators=100,  # Number of trees in the forest
-            random_state=42
-        ),
-        'gradient_boosting': GradientBoostingClassifier(
-            n_estimators=100,  # Number of boosting stages to be run
-            learning_rate=0.1,  # Shrinks the contribution of each tree
-            max_depth=3,  # Maximum depth of the individual regression estimators
             random_state=42
         ),
         'logistic_regression': LogisticRegression(
@@ -80,9 +71,8 @@ def main(data_file_path, model_type, target_variables, feature_selection_criteri
     df_train = normalize_features(df_train, config.numerical_columns)
     df_test = normalize_features(df_test, config.numerical_columns)
 
-    # Save the processed data
-    df_train.to_csv("../Data/processed/processed_data_train.csv", index=False)
-    df_test.to_csv("../Data/processed/processed_data_test.csv", index=False)
+    save_to_csv(df_train,config.processed_data_dir,'processed_data_train.csv', index=False)
+    save_to_csv(df_test,config.processed_data_dir,'processed_data_test.csv', index=False)
 
     if model_type not in models:
         raise ValueError("Model type not supported")

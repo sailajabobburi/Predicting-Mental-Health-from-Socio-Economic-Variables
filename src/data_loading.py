@@ -49,7 +49,7 @@ def split_train_test(df, test_size=0.2, random_state=42, output_folder='processe
 
     train_filename = os.path.join(output_folder, 'train_data.csv')
     test_filename = os.path.join(output_folder, 'test_data.csv')
-
+    print(train_filename)
     train_df.to_csv(train_filename, index=False)
     test_df.to_csv(test_filename, index=False)
 
@@ -57,3 +57,28 @@ def split_train_test(df, test_size=0.2, random_state=42, output_folder='processe
     print(f"Saved test data to {test_filename}")
 
     return train_df, test_df
+
+
+def save_to_csv(df, directory, filename,index=False):
+    """
+    Saves a DataFrame to a CSV file in the specified directory.
+
+    Parameters:
+    - df (pandas.DataFrame): The DataFrame to save.
+    - directory (str): The directory where the CSV file will be saved.
+    - filename (str): The name of the CSV file.
+
+    Returns:
+    - None
+    """
+    # Ensure the directory exists
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+        print(f"Directory created: {directory}")
+
+    # Full path to save the file
+    file_path = os.path.join(directory, filename)
+
+    # Save the DataFrame to a CSV file
+    df.to_csv(file_path, index=index)
+    print(f"Data saved to {file_path}")
