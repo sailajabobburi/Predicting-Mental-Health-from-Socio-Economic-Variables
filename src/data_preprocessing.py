@@ -1,9 +1,9 @@
 import pandas as pd
 from tabulate import tabulate
-from data_loading import read_csv_data
+from src.data_loading import read_csv_data
 from sklearn.impute import SimpleImputer
 import numpy as np
-from eda import count_and_print_classes
+from src.eda import count_and_print_classes
 from sklearn.preprocessing import MinMaxScaler
 from imblearn.over_sampling import SMOTE
 

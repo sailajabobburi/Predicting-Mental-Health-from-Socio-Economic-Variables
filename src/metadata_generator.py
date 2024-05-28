@@ -1,5 +1,5 @@
 import pandas as pd
-from data_preprocessing import drop_columns
+from src.data_preprocessing import drop_columns
 # Define the path to the CSV file
 csv_file_path = '../Data/raw/data.csv'
 
