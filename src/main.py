@@ -4,7 +4,7 @@ from src.report_generation import *
 from src.data_preprocessing import *
 from src.data_loading import split_train_test
 import src.config as config
-from feature_selection import *
+from src.feature_selection import *
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.linear_model import LogisticRegression
