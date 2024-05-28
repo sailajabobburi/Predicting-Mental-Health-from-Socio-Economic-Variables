@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>About - Ghana Panel Survey</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F4F1F8;
+            color: #333333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .banner {
+            width: 100%;
+            background-color: #512D6D;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        nav {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .content {
+            max-width: 800px;
+            margin: 20px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #512D6D;
+        }
+        p {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <h1>About Ghana Panel Survey</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/faq">FAQ</a>
+        </nav>
+    </div>
+    <div class="content">
+        <h2>What We Are Doing</h2>
+        <p>The Ghana Panel Survey aims to analyze and track various socioeconomic indicators over time within different demographics. This project utilizes machine learning models to predict outcomes based on the survey data collected.</p>
+
+        <h2>How to Use This Tool</h2>
+        <p>Follow these steps to use the data upload and model selection tool:</p>
+        <ol>
+            <li><strong>Upload your CSV file:</strong> Click on the "Choose File" button to select and upload your dataset in CSV format.</li>
+            <li><strong>Select Model Type:</strong> Choose the type of machine learning model you want to use for analysis. The options include Decision Tree, Random Forest, Gradient Boosting, and Logistic Regression.</li>
+            <li><strong>Select Target Variable:</strong> Select one or more target variables that you want to predict using the chosen model. You can select multiple variables by holding the "Ctrl" key (or "Cmd" key on Mac) while clicking.</li>
+            <li><strong>Process:</strong> Click the "Process" button to start the analysis. The tool will process the data, train the model, and display the feature importances.</li>
+        </ol>
+    </div>
+</body>
+</html>

@@ -117,6 +117,22 @@ def plot_pairplot(df, columns, hue=None):
     except Exception as e:
         print(f"Failed to plot pairplot: {e}")
 
+def count_and_print_classes(df, target_columns):
+    class_counts = {}
+    for target in target_columns:
+        if target in df.columns:
+            counts = df[target].value_counts().to_dict()
+            class_counts[target] = counts
+            print(f"Class counts for {target}:")
+            for class_label, count in counts.items():
+                print(f"  Class {class_label}: {count}")
+                print()  # Blank line for readability
+        else:
+                print(f"Warning: {target} not found in DataFrame columns.")
+    return class_counts
+
+
+
 
 # if __name__ == "__main__":
 #     # Load and clean data

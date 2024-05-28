@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Data File</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F4F1F8; /* Northwestern light background color */
+            color: #333333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .banner {
+            width: 100%;
+            background-color: #512D6D; /* Northwestern purple */
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Optional: adds shadow for better depth */
+            position: relative;
+        }
+        nav {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        h1 {
+            margin: 0;
+        }
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            width: 100%;
+        }
+        form {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: white; /* White background for form */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+            margin: 10px 0;
+        }
+        label {
+            margin-bottom: 5px;
+            color: #512D6D;
+            width: 100%;
+        }
+        input[type="file"], select, button {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 2px solid #512D6D;
+            box-sizing: border-box;
+        }
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+            width: 100%;
+        }
+        button {
+            background-color: #512D6D;
+            color: white;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #412456;
+        }
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <h1>Ghana Panel Survey</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/faq">FAQ</a>
+        </nav>
+    </div>
+    <div class="form-container">
+        <form action="/upload/" enctype="multipart/form-data" method="post">
+            <div class="form-group">
+                <label for="file">Upload your CSV file:</label>
+                <input type="file" id="file" name="file">
+            </div>
+            <div class="form-group">
+                <label for="model_type">Select Model Type:</label>
+                <select id="model_type" name="model_type">
+                    <option value="">Select</option>
+                    <option value="decision_tree">Decision Tree</option>
+                    <option value="random_forest">Random Forest</option>
+                    <option value="gradient_boosting">Gradient Boosting</option>
+                    <option value="logistic_regression">Logistic Regression</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Select Target Variable:</label>
+                <label class="checkbox-label"><input type="checkbox" name="target_variable" value="kessler_dummy2">Kessler Dummy 2</label>
+                <label class="checkbox-label"><input type="checkbox" name="target_variable" value="kessler_dummy3">Kessler Dummy 3</label>
+                <label class="checkbox-label"><input type="checkbox" name="target_variable" value="kessler_dummy4">Kessler Dummy 4</label>
+            </div>
+            <button type="submit">Process</button>
+        </form>
+    </div>
+</body>
+</html>
