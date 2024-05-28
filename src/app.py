@@ -10,7 +10,7 @@ from typing import List
 app = FastAPI()
 
 # Configure templates
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory="src/templates")
 
 @app.post("/upload/")
 async def process_data(request: Request, file: UploadFile = File(...), model_type: str = Form(...), target_variable: List[str] = Form(...)):
