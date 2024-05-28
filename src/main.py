@@ -5,12 +5,13 @@ from src.data_preprocessing import *
 from src.data_loading import split_train_test
 import src.config as config
 from feature_selection import *
-from src.model_interpretation import *
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.linear_model import LogisticRegression
+from src.feature_importance import *
 
-def main(data_file_path, model_type, target_variables):
+
+def main(data_file_path, model_type, target_variables, feature_selection_criteria='SHAP'):
     """
     Main function to process data, train and evaluate models, and save feature importances.
 
@@ -18,6 +19,7 @@ def main(data_file_path, model_type, target_variables):
     - data_file_path (str): The path to the CSV data file.
     - model_type (str): The type of model to train.
     - target_variables (list): A list of target variables to process.
+    - feature_selection_criteria (str): The criteria for selecting feature importance ('SHAP' or 'feature_importance_scores').
 
     Returns:
     - DataFrame: A DataFrame containing feature importances for all target variables.
@@ -25,10 +27,39 @@ def main(data_file_path, model_type, target_variables):
 
     # Model dictionary
     models = {
-        'decision_tree': DecisionTreeClassifier(random_state=42),
-        'random_forest': RandomForestClassifier(n_estimators=100, random_state=42),
-        'gradient_boosting': GradientBoostingClassifier(n_estimators=100, random_state=42),
-        'logistic_regression': LogisticRegression(random_state=42)
+        'decision_tree': DecisionTreeClassifier(
+            criterion='gini',  # Measure of split quality ('gini' or 'entropy')
+            max_depth=3,  # Maximum depth of the tree
+            min_samples_split=2,  # Minimum number of samples required to split an internal node
+            random_state=42
+        ),
+        'random_forest': RandomForestClassifier(
+            n_estimators=100,  # Number of trees in the forest
+            random_state=42
+        ),
+        'gradient_boosting': GradientBoostingClassifier(
+            n_estimators=100,  # Number of boosting stages to be run
+            learning_rate=0.1,  # Shrinks the contribution of each tree
+            max_depth=3,  # Maximum depth of the individual regression estimators
+            random_state=42
+        ),
+        'logistic_regression': LogisticRegression(
+            penalty='l2',  # Norm used in the penalization ('l1', 'l2', or 'elasticnet')
+            C=1.0,  # Inverse of regularization strength
+            solver='lbfgs',  # Algorithm to use in the optimization problem
+            max_iter=1000,  # Maximum number of iterations taken for the solvers to converge
+            random_state=42
+        ),
+        'XGBoost': XGBClassifier(
+            n_estimators=100,  # Number of boosting rounds
+            learning_rate=0.1,  # Boosting learning rate
+            max_depth=5,  # Maximum depth of a tree
+            subsample=1,  # Subsample ratio of the training instances
+            colsample_bytree=1,  # Subsample ratio of columns when constructing each tree
+            random_state=42,
+            use_label_encoder=False,
+            eval_metric='logloss'
+        )
     }
 
     # Load data
@@ -61,6 +92,7 @@ def main(data_file_path, model_type, target_variables):
     # Train and evaluate models for each target variable
     all_results = {}
     test_accuracies = []
+    all_feature_importances = []
 
     for target in target_variables:
         print(f"Training and evaluating models for target: {target}")
@@ -71,7 +103,7 @@ def main(data_file_path, model_type, target_variables):
         X_test = drop_columns(df_test, config.target_columns)
         y_test = df_test[target]
 
-        # Perform feature selection using Lasso
+        # Perform feature selection using RFE
         selected_features = select_features_rfe(X_train, y_train, n_features_to_select=50)
         print(f"Selected Features for {target}: {selected_features}")
         X_train_selected = X_train[selected_features]
@@ -82,42 +114,45 @@ def main(data_file_path, model_type, target_variables):
         counts = y_train_res.value_counts()
         print(counts)
 
-        #
-        # # Cross Validatiom  Random Forest
-        # model = RandomForestClassifier(n_estimators=100, random_state=42)
-        # # Perform cross-validation
-        # mean_cv_score, std_cv_score = cross_validate_model(model, X_train_res, y_train_res)
-        # print(f"Cross-Validation Mean Score for {target}: {mean_cv_score}")
-        # print(f"Cross-Validation Std Dev for {target}: {std_cv_score}")
-
-        #Train the model on the entire training set
-
         trained_model = train_model(model, X_train_res, y_train_res)
         # Evaluate model
         result = evaluate_model(trained_model, X_test_selected, y_test)
-        all_results[target] = result
         test_accuracies.append({'Target': target, 'Accuracy': result['accuracy']})
 
-        # # Get SHAP values
-        # shap_values, explainer = get_shap_values(trained_model, X_test_selected)
-        # shap.summary_plot(shap_values, X_test_selected, feature_names=selected_features)
-        # plot_shap_importance(shap_values, X_test_selected, max_display=20)
+        if feature_selection_criteria == 'SHAP':
+            top_features = get_feature_importance_shap(trained_model, X_train_res, X_test_selected, top_n=20,
+                                                       model_folder='../Results', target_name=target)
+            all_feature_importances.append(top_features)
 
+        elif feature_selection_criteria=='FIS':
+            if model_type == 'logistic_regression':
+                top_features = get_feature_importance_logistic_regression(trained_model, X_train_res,
+                                                                          model_folder='../Results/Logistic_regression',
+                                                                          target_name=target, top_n=20)
+            else:
+                top_features = get_feature_importance_scores(trained_model, X_train_res, model_folder='../Results',
+                                                             target_name=target, top_n=20)
+            all_feature_importances.append(top_features)
 
-        # model_dt = DecisionTreeClassifier(random_state=42)
-        # trained_model=train_decision_tree(model_dt,X_train_res, y_train_res)
-        # result= evaluate_decision_tree(trained_model, X_test_selected, y_test)
-        # all_results[target] = result
-
+        #result['top_features'] = top_features
+        all_results[target] = result
 
     save_evaluation_metrics(all_results, model_type, '../Results')
-    imp_features_df=save_feature_importances(all_results, model_type, '../Results/')
+
+    # Concatenate all feature importances
+    all_feature_importances_df = pd.concat(all_feature_importances)
+    output_file = os.path.join(f'../Results/{model_type}', f'feature_importances_{feature_selection_criteria}_{datetime.now().strftime("%Y%m%d_%H%M%S")}.csv')
+    all_feature_importances_df.to_csv(output_file, index=False)
+    print(f"All feature importances saved to {output_file}")
+
     save_confusion_matrix(all_results, model_type, '../Results/')
     test_accuracies_df = pd.DataFrame(test_accuracies)
 
-    return imp_features_df,test_accuracies_df
+    return all_feature_importances_df, test_accuracies_df
 
-#
+
 # if __name__ == "__main__":
-#     df=main(config.raw_data_file_path,"decision_tree",["kessler_dummy2","kessler_dummy3"])
-#     print(df)
+#     #df_st=main(config.raw_data_file_path,"decision_tree",["kessler_dummy2","kessler_dummy3","kessler_dummy4"],'FIS')
+#     # df_rf = main(config.raw_data_file_path, "random_forest", ["kessler_dummy2","kessler_dummy3","kessler_dummy4"],'FIS')
+#     # # df_gb = main(config.raw_data_file_path, "XGBoost", ["kessler_dummy2","kessler_dummy3","kessler_dummy4"],'FIS')
+#     # #df_ls= main(config.raw_data_file_path, "logistic_regression", ["kessler_dummy2","kessler_dummy3","kessler_dummy4"],'FIS')
