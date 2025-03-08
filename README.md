@@ -16,9 +16,8 @@ This project utilizes the **Ghana Panel Survey** dataset to benchmark multiple *
 - **Feature Engineering**: Address gender-based missing values and create generalized features to improve model robustness.
 
 ## Dataset
-**Input Variables**
 The Ghana Panel Survey includes a variety of socio-economic and demographic variables that serve as inputs for our predictive models. 
-Output Variable: Kessler Dummy 1,2,3,4(collected in 4 waves)
+Output Variable: Kessler Dummy 2,3,4(collected in 3 waves)
 The Kessler Psychological Distress Scale (K10) is a widely used measure of mental health distress. It is a 10-question survey that measures psychological distress, with scores ranging from 10 to 50, where higher scores indicate greater distress. In this project, we use the Kessler dummy variable as our target variable for classification and feature importance analysis.
 
 ## Installation
