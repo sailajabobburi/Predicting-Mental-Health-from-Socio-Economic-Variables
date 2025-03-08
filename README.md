@@ -1,7 +1,6 @@
 # Ghana Panel Survey: Benchmarking and Model Interpretability for Mental Health Analysis
 
-This project utilizes the **Ghana Panel Survey** dataset to benchmark multiple **machine learning models** and apply **SHAP (SHapley Additive exPlanations)** for model interpretability. The primary goal is to **identify the most influential socio-economic variables impacting mental health** by analyzing feature importance rather than solely focusing on classification accuracy.
-
+This project utilizes the **Ghana Panel Survey** dataset to benchmark multiple **machine learning models** and apply **SHAP (SHapley Additive exPlanations)** for model interpretability. The primary goal is to **identify the most influential socio-economic variables impacting mental health** by analyzing feature importance.
 ## Project Overview
 
 - **Benchmarking Machine Learning Models**: Evaluate **Logistic Regression, Decision Trees, Random Forest, and XGBoost** to determine the most effective model for predicting mental health distress.
