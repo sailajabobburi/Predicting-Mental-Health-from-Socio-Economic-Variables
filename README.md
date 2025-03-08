@@ -16,14 +16,17 @@ This project utilizes the **Ghana Panel Survey** dataset to benchmark multiple *
 - **Class Imbalance Handling**: Use **SMOTE (Synthetic Minority Oversampling Technique)** and oversampling techniques to ensure balanced model training.
 - **Feature Engineering**: Address gender-based missing values and create generalized features to improve model robustness.
 
+## Dataset
+**Input Variables**
+The Ghana Panel Survey includes a variety of socio-economic and demographic variables that serve as inputs for our predictive models. 
+Output Variable: Kessler Dummy 1,2,3,4(collected in 4 waves)
+The Kessler Psychological Distress Scale (K10) is a widely used measure of mental health distress. It is a 10-question survey that measures psychological distress, with scores ranging from 10 to 50, where higher scores indicate greater distress. In this project, we use the Kessler dummy variable as our target variable for classification and feature importance analysis.
+
 ## Installation
 
 ### **1. Clone the Repository**
 
-```bash
-git clone https://github.com/yourusername/ghana-panel-survey-analysis.git
-cd ghana-panel-survey-analysis
-```
+
 
 ### **2. Set Up a Virtual Environment** (Optional but recommended)
 
@@ -52,6 +55,10 @@ python main.py
 
 - Model performance metrics and SHAP visualizations will be saved in the `results/` directory.
 - SHAP plots will be generated to highlight the most influential features.
+<img width="874" alt="image" src="https://github.com/user-attachments/assets/41a2dea9-df2f-4f35-96cf-2beed380c951" />
+<img width="1397" alt="image" src="https://github.com/user-attachments/assets/51a472f9-7322-4d74-bff9-054339050551" />
+
+
 
 
 ## Model Evaluation and Benchmarking
