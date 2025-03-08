@@ -70,11 +70,6 @@ python main.py
 
 ## SHAP-Based Feature Importance Analysis
 
-- **SHAP Value Calculation**:
-  - Feature A: **+0.9** (Significantly increases distress probability)
-  - Feature B: **-0.8** (Significantly decreases distress probability)
-  - Feature C: **+0.01** (Marginal impact)
-
 - **Top Features Identified Using SHAP**:
   - **Age (age_yrs1)**
   - **Educational Attainment (educ1)**
